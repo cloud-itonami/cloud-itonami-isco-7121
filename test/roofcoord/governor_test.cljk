@@ -1,5 +1,5 @@
 (ns roofcoord.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [roofcoord.store :as store]
             [roofcoord.advisor :as advisor]
             [roofcoord.governor :as governor]))
