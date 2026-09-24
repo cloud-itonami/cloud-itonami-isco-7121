@@ -1,0 +1,35 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a job-site scheduling/logistics coordination
+;; robot for roofers (ISCO 7121) logs work records, proposes crew schedules,
+;; surfaces safety concerns and coordinates materials orders; it never does
+;; roofing work itself. Its physical work is moving roofing materials to the
+;; hoist; the physics behind the safety concern it must surface is heat from
+;; torch-applied membrane reaching a combustible timber deck.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-7121"
+ :cases
+ [{:id :shingle-pallet-to-hoist
+   :kind :transport
+   :procedure "logistics robot carries a pallet of shingle bundles / membrane rolls 50 m across the yard to the roof hoist"
+   :params {:mass-kg 120.0 :distance-m 50.0 :v-max-mps 1.2 :a-max-mps2 0.5
+            :brake-decel-mps2 0.8 :drive-force-n 400.0 :crr 0.04
+            :cog-height-m 0.45 :support-half-length-m 0.40 :payload-cog-height-m 0.80}
+   :sweep {:param :payload-kg :values [100.0 200.0 300.0 450.0 600.0]}
+   :quantity :cycle-time-s
+   :limit {:max 90.0 :basis "estimate: one yard leg within the hoist's loading cycle so the roof crew is not kept waiting"}
+   :boundary {:lo 10.0 :hi 1500.0}}
+  {:id :torch-on-deck-heating
+   :kind :thermal
+   :procedure "roofer torches bitumen membrane for 60 s over a mineral-wool insulation board laid on a timber deck; the robot surfaces a safety concern when the deck side gets too hot; board thickness is swept"
+   :params {:conductivity-w-mk 0.040 :density-kg-m3 150.0 :specific-heat-j-kgk 1030.0
+            :t0-c 20.0 :t-hot-c 600.0 :h-front-w-m2k 50.0 :heating-s 60.0 :t-cool-c 20.0
+            :t-back-ambient-c 20.0 :h-back-w-m2k 2.0 :threshold-c 150.0 :duration-s 1800.0}
+   :sweep {:param :thickness-m :values [0.005 0.01 0.02 0.03 0.05]}
+   :quantity :peak-back-c
+   :limit {:max 150.0 :basis "estimate: keep the timber deck well below the ~250-300 C range usually quoted for wood ignition, with margin for longer local dwell of the torch"}
+   :boundary {:lo 0.003 :hi 0.08}}]}
