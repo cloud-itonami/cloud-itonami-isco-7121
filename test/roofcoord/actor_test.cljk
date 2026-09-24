@@ -1,5 +1,5 @@
 (ns roofcoord.actor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [roofcoord.actor :as actor]
             [roofcoord.store :as store]))
 
