@@ -1,6 +1,6 @@
 (ns roofcoord.store
   "SSoT for the ISCO-08 7121 roofing crew scheduling/logistics
-  coordination actor (itonami actor pattern, ADR-2607011000 / CLAUDE.md
+  coordination actor (itonami actor pattern, ADR-2607011000 / AGENTS.md
   Actors section; README's 'Robotics premise' — a job-site
   scheduling/logistics coordination robot proposes crew scheduling,
   work-record logging, safety-concern flags and materials-order
